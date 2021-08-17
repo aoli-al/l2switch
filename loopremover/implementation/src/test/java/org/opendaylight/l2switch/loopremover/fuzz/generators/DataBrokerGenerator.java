@@ -26,11 +26,14 @@ import org.opendaylight.controller.md.sal.common.api.data.LogicalDatastoreType;
 import org.opendaylight.controller.md.sal.common.api.data.ReadFailedException;
 import org.opendaylight.controller.md.sal.common.api.data.TransactionChainListener;
 import org.opendaylight.mdsal.common.api.CommitInfo;
+import org.opendaylight.yang.gen.v1.urn.opendaylight.inventory.rev130819.NodeConnector;
+import org.opendaylight.yang.gen.v1.urn.opendaylight.inventory.rev130819.node.NodeConnectorBuilder;
 import org.opendaylight.yang.gen.v1.urn.tbd.params.xml.ns.yang.network.topology.rev131021.network.topology.Topology;
 import org.opendaylight.yangtools.concepts.ListenerRegistration;
 import org.opendaylight.yangtools.yang.binding.DataObject;
 import org.opendaylight.yangtools.yang.binding.InstanceIdentifier;
 
+import javax.swing.text.html.Option;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.Executor;
 import java.util.concurrent.TimeUnit;
@@ -83,7 +86,7 @@ public class DataBrokerGenerator extends GeneratorBase<DataBroker> {
                 @Override
                 public <T extends DataObject> CheckedFuture<Optional<T>, ReadFailedException> read(
                         LogicalDatastoreType store, InstanceIdentifier<T> path) {
-                    return null;
+                    return Futures.immediateCheckedFuture(Optional.absent());
                 }
 
                 @Override
@@ -121,7 +124,7 @@ public class DataBrokerGenerator extends GeneratorBase<DataBroker> {
 
                 @Override
                 public @NonNull FluentFuture<? extends @NonNull CommitInfo> commit() {
-                    return null;
+                    return CommitInfo.emptyFluentFuture();
                 }
 
                 @Override

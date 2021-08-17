@@ -26,6 +26,7 @@ public class TopologyLinkDataChangeHandlerGenerator extends GeneratorBase<Topolo
                 gen().make(DataBrokerGenerator.class).generate(random, status),
                 gen().make(NetworkGraphServiceGenerator.class).generate(random, status)
         );
+        handler.setTopologyId(null);
 
         generatorManager.registerListener(
                 this.getClass(),

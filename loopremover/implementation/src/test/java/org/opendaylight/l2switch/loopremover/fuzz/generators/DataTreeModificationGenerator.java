@@ -21,20 +21,26 @@ public class DataTreeModificationGenerator extends GeneratorBase<DataTreeModific
         super(DataTreeModification.class);
     }
 
+    public static class FakeDataTreeModification implements DataTreeModification<Link> {
+        DataObjectModification obj;
+
+        public FakeDataTreeModification(DataObjectModification obj) {
+            this.obj = obj;
+        }
+
+        @Override
+        public @NonNull DataTreeIdentifier<Link> getRootPath() {
+            return null;
+        }
+
+        @Override
+        public @NonNull DataObjectModification<Link> getRootNode() {
+            return obj;
+        }
+    }
+
     @Override
     public DataTreeModification generate(SourceOfRandomness random, GenerationStatus status) {
-        return new DataTreeModification<Link>() {
-            DataObjectModification obj = gen().make(DataObjectModificationGenerator.class).generate(random, status);
-
-            @Override
-            public @NonNull DataTreeIdentifier<Link> getRootPath() {
-                return null;
-            }
-
-            @Override
-            public @NonNull DataObjectModification<Link> getRootNode() {
-                return obj;
-            }
-        };
+        return new FakeDataTreeModification(gen().make(DataObjectModificationGenerator.class).generate(random, status));
     }
 }

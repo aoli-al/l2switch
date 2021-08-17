@@ -5,14 +5,13 @@
  * terms of the Eclipse Public License v1.0 which accompanies this distribution,
  * and is available at http://www.eclipse.org/legal/epl-v10.html
  */
-package org.opendaylight.l2switch.loopremover.fuzz.drivers;
 
 import com.pholser.junit.quickcheck.From;
 import edu.berkeley.cs.jqf.fuzz.Fuzz;
 import edu.berkeley.cs.jqf.fuzz.JQF;
 import edu.cmu.pasta.seal.EventDispatcher;
-import edu.cmu.pasta.seal.generator.ConfigurationInstance;
 import org.junit.runner.RunWith;
+import org.opendaylight.l2switch.loopremover.fuzz.generators.ConfigurationInstance;
 import org.opendaylight.l2switch.loopremover.fuzz.generators.EventDispatcherGenerator;
 import org.opendaylight.l2switch.loopremover.fuzz.generators.FakeTopologyProviderGenerator;
 import org.opendaylight.l2switch.loopremover.fuzz.generators.TopologyLinkDataChangeHandlerGenerator;
@@ -20,7 +19,7 @@ import org.opendaylight.l2switch.loopremover.fuzz.generators.TopologyLinkDataCha
 @RunWith(JQF.class)
 public class LoopRemoverDriver {
 
-    @Fuzz
+    @Fuzz()
     public void zest(
             @EventDispatcherGenerator.RegisteredServices(
                     services = {

@@ -23,6 +23,11 @@ public class FakeTopologyProviderGenerator extends GeneratorBase<FakeTopologyPro
         private List<Link> links = new ArrayList<>();
         private List<Node> nodes = new ArrayList<>();
 
+        public void deactivate() {
+            links.clear();
+            nodes.clear();
+        }
+
         public Topology getTopology() {
             TopologyBuilder builder = new TopologyBuilder();
             builder.setLink(links);
