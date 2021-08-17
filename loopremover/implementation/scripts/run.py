@@ -46,7 +46,7 @@ class Config(object):
         self.jqf_commit_hash = jqf_commit_hash
 
     def get_class_paths(self) -> str:
-        return self.BASE_PATH+"/target/classes:"+self.BASE_PATH+"/target/test-classes:" + self.BASE_PATH + "/target/loopremover-impl-0.8.0-SNAPSHOT-jar-with-dependencies.jar"
+        return self.BASE_PATH+"target/classes:"+self.BASE_PATH+"target/test-classes:" + self.BASE_PATH + "/target/loopremover-impl-0.8.0-SNAPSHOT-jar-with-dependencies.jar"
         #  return resolve_class_paths(self.get_runfiles())
 
     def get_runfiles(self) -> str:
@@ -101,6 +101,9 @@ class Config(object):
         os.makedirs(self.get_work_dir())
         #  self.checkout_or_store_commit_hash()
         self.serialize(os.path.join(self.get_work_dir(), "config.json"))
+        print(["./fuzzer/core/third_party/JQF/bin/jqf-" + self.algo,
+            "-v", "-c", self.get_class_paths(),
+            self.get_test_class(), "zest", self.get_work_dir()])
         subprocess.run(["./fuzzer/core/third_party/JQF/bin/jqf-" + self.algo,
             "-v", "-c", self.get_class_paths(),
             self.get_test_class(), "zest", self.get_work_dir()],
