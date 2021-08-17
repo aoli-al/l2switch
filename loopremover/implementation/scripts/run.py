@@ -8,7 +8,6 @@ import argparse
 import shutil
 import jsonpickle
 from typing import Dict, Optional
-from git import Repo
 from sys import platform
 
 def resolve_class_paths(run_dir: str) -> str:
@@ -22,7 +21,7 @@ def resolve_class_paths(run_dir: str) -> str:
 
 
 class Config(object):
-    BASE_PATH = "bazel-bin/fuzzer/core/src/test/java/org/onosproject/fuzzer/driver/"
+    BASE_PATH = "fuzzer/core/third_party/l2switch/loopremover/implementation/"
     BASE_CLASS = "org.onosproject.fuzzer.driver."
     ONOS_DIR = os.path.join(os.path.dirname(os.path.realpath(__file__)), "../..")
     JQF_DIR = os.path.join(ONOS_DIR, "fuzzer/core/third_party/JQF")
@@ -47,20 +46,22 @@ class Config(object):
         self.jqf_commit_hash = jqf_commit_hash
 
     def get_class_paths(self) -> str:
-        return resolve_class_paths(self.get_runfiles())
+        return self.BASE_PATH+"/target/classes:"+self.BASE_PATH+"/target/test-classes:" + self.BASE_PATH + "/target/loopremover-impl-0.8.0-SNAPSHOT-jar-with-dependencies.jar"
+        #  return resolve_class_paths(self.get_runfiles())
 
     def get_runfiles(self) -> str:
         return os.path.join(Config.BASE_PATH, self.class_name) + ".runfiles"
 
     def get_test_class(self) -> str:
-        return Config.BASE_CLASS + self.class_name
+        return "org.opendaylight.l2switch.loopremover.fuzz.drivers.LoopRemoverDriver"
 
     def get_java_home(self) -> str:
         if platform == "linux" or platform == "linux2":
             os_name = "linux"
         else:
             os_name = "macos"
-        return os.path.join(self.get_runfiles(), "remotejdk11_" + os_name)
+        return "/usr/local/opt/openjdk@11"
+        #  return os.path.join(self.get_runfiles(), "remotejdk11_" + os_name)
 
     def get_work_dir(self) -> str:
         return os.path.join("results", self.class_name)
@@ -98,7 +99,7 @@ class Config(object):
     def run(self):
         shutil.rmtree(self.get_work_dir(), ignore_errors=True)
         os.makedirs(self.get_work_dir())
-        self.checkout_or_store_commit_hash()
+        #  self.checkout_or_store_commit_hash()
         self.serialize(os.path.join(self.get_work_dir(), "config.json"))
         subprocess.run(["./fuzzer/core/third_party/JQF/bin/jqf-" + self.algo,
             "-v", "-c", self.get_class_paths(),
