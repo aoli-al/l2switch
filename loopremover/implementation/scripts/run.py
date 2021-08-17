@@ -60,7 +60,7 @@ class Config(object):
             os_name = "linux"
         else:
             os_name = "macos"
-        return "/usr/local/opt/openjdk@11"
+        return ""
         #  return os.path.join(self.get_runfiles(), "remotejdk11_" + os_name)
 
     def get_work_dir(self) -> str:
