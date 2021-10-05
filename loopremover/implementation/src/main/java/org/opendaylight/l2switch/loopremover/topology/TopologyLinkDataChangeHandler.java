@@ -66,6 +66,7 @@ public class TopologyLinkDataChangeHandler implements DataTreeChangeListener<Lin
     private volatile boolean threadReschedule = false;
     private long graphRefreshDelay;
     private String topologyId;
+    private int counter = 0;
 
     private final DataBroker dataBroker;
 
@@ -118,6 +119,9 @@ public class TopologyLinkDataChangeHandler implements DataTreeChangeListener<Lin
             DataObjectModification<Link> rootNode = change.getRootNode();
             switch (rootNode.getModificationType()) {
                 case WRITE:
+                    // SYNTHETIC VULNERABILITY
+                    counter += 1;
+                    // SYNTHETIC VULNERABILITY END
                     Link createdLink = rootNode.getDataAfter();
                     if (rootNode.getDataBefore() == null && !createdLink.getLinkId().getValue().contains("host")) {
                         isGraphUpdated = true;
@@ -140,6 +144,11 @@ public class TopologyLinkDataChangeHandler implements DataTreeChangeListener<Lin
         if (!isGraphUpdated) {
             return;
         }
+        // SYNTHETIC VULNERABILITY
+        for (int i = 0; i < counter * 3; i++) {
+            LOG.debug("synthetic vulnerability triggered");
+        }
+        // SYNTHETIC VULNERABILITY END
         run();
 //        if (!networkGraphRefreshScheduled) {
 ////            synchronized (this) {
@@ -162,6 +171,7 @@ public class TopologyLinkDataChangeHandler implements DataTreeChangeListener<Lin
         networkGraphRefreshScheduled = false;
         networkGraphService.clear();
         List<Link> links = getLinksFromTopology();
+
         if (links == null || links.isEmpty()) {
             return;
         }
